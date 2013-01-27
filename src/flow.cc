@@ -5,12 +5,18 @@
 using std::cout;
 using std::endl;
 using flow::Clock;
+using flow::ProcessClock;
+using flow::ThreadClock;
 
 int main() {
-  Clock begtime;
+  Clock realtime;
+  ProcessClock proctime;
+  ThreadClock threadtime;
   cout << "flow";
   for (int i = 0; i < 10; ++i) {
-    cout << " " << Clock() - begtime;
+    cout << " " << Clock() - realtime
+         << "/" << ProcessClock() - proctime
+         << "/" << ThreadClock() - threadtime;
   }
   cout << endl;
 }

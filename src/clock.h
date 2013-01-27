@@ -99,13 +99,13 @@ template<uint8_t _ClockType = CLOCK_MONOTONIC>
 class BasicClock {
  public:
   typedef ClockDiff Diff;
+
   // Clock types used to switch between process, thread and wallclock time.
   enum Type {
     kProcessCpuTime = CLOCK_PROCESS_CPUTIME_ID,
     kThreadCpuTime = CLOCK_THREAD_CPUTIME_ID,
     kRealMonotonic = CLOCK_MONOTONIC,
   };
-
 
   // Initializes the clock with given type and the current clock time.
   BasicClock() {
@@ -134,6 +134,8 @@ class BasicClock {
 };
 
 typedef BasicClock<> Clock;
+typedef BasicClock<CLOCK_PROCESS_CPUTIME_ID> ProcessClock;
+typedef BasicClock<CLOCK_THREAD_CPUTIME_ID> ThreadClock;
 
 // Stream output operator overload for Diff.
 inline std::ostream& operator<<(std::ostream& stream, const ClockDiff& diff) {
