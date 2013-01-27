@@ -1,0 +1,10 @@
+*.lo
+*.o
+*.a
+bin/*
+deps/*
+log/*
+tools/*
+data/*
+local/*
+include/*

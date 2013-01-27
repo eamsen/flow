@@ -10,7 +10,7 @@ LIBS:=-Llibs -lpthread -lrt
 TSTFLAGS:=-O0 -Wall -g
 TSTLIBS:=$(GTESTLIBS) $(LIBS)
 BINS:=flow
-INTLIBS:=$(addprefix libpythia-, $(SRCSUBDIRS))
+INTLIBS:=$(addprefix libpythia-, $(SRCSUBDIRS)) libflow
 
 TSTBINS:=$(notdir $(basename $(wildcard $(TSTDIR)/*.cc)))
 TSTOBJS:=$(addsuffix .o, $(notdir $(basename $(wildcard $(TSTDIR)/*.cc))))
@@ -43,6 +43,7 @@ depend: cpplint
 	@echo "compiled all dependencies"
 
 makedirs:
+	@mkdir -p include
 	@mkdir -p lib
 	@mkdir -p libs
 	@mkdir -p bin/obj
@@ -70,6 +71,10 @@ clean:
 .PRECIOUS: $(OBJS) $(TSTOBJS)
 .PHONY: libs all compile profile opt depend makedirs check\
 	cpplint checkstyle clean
+
+libflow: $(OBJS)
+	@cp $(SRCDIR)/*.h include/;
+	@echo "compiled lib/libflow"
 
 libflow-%: $(SRCDIR)/%/*.cc
 	$(eval LIBFILES:=$(notdir $(basename $(wildcard $(SRCDIR)/$*/*.cc))))
