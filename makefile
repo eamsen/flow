@@ -43,7 +43,7 @@ depend: cpplint
 	@echo "compiled all dependencies"
 
 makedirs:
-	@mkdir -p include
+	@mkdir -p include/flow
 	@mkdir -p lib
 	@mkdir -p libs
 	@mkdir -p bin/obj
@@ -73,7 +73,7 @@ clean:
 	cpplint checkstyle clean
 
 libflow: $(OBJS)
-	@cp $(SRCDIR)/*.h include/;
+	@cp $(SRCDIR)/*.h include/flow/;
 	@echo "compiled lib/libflow"
 
 libflow-%: $(SRCDIR)/%/*.cc
