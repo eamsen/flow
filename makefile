@@ -10,7 +10,7 @@ LIBS:=-Llibs -lpthread -lrt
 TSTFLAGS:=-O0 -Wall -g
 TSTLIBS:=$(GTESTLIBS) $(LIBS)
 BINS:=flow
-INTLIBS:=$(addprefix libpythia-, $(SRCSUBDIRS)) libflow
+INTLIBS:=libflow#$(addprefix libflow-, $(SRCSUBDIRS)) libflow
 
 TSTBINS:=$(notdir $(basename $(wildcard $(TSTDIR)/*.cc)))
 TSTOBJS:=$(addsuffix .o, $(notdir $(basename $(wildcard $(TSTDIR)/*.cc))))
@@ -20,11 +20,10 @@ OBJS:=$(addprefix $(OBJDIR)/, $(OBJS))
 BINS:=$(addprefix $(BINDIR)/, $(BINS))
 TSTBINS:=$(addprefix $(BINDIR)/, $(TSTBINS))
 
-all: libs compile
-	@echo "compiled all"
+all: compile
 
-compile: makedirs $(BINS)
-	@echo "compiled pythia"
+compile: makedirs $(BINS) libflow
+	@echo "finished compiling"
 
 libs: makedirs $(INTLIBS)
 	@echo "compiled libs"
@@ -64,6 +63,7 @@ checkstyle:
 clean:
 	@rm -f $(OBJDIR)/*.o
 	@rm -f libs/*.a
+	@rm -rf include/*
 	@rm -f $(BINS)
 	@rm -f $(TSTBINS)
 	@echo "cleaned"
@@ -74,7 +74,9 @@ clean:
 
 libflow: $(OBJS)
 	@cp $(SRCDIR)/*.h include/flow/;
-	@echo "compiled lib/libflow"
+	@cp -r $(SRCDIR)/* include/flow/;
+	@rm -rf include/flow/test/;
+	@echo "copied headers"
 
 libflow-%: $(SRCDIR)/%/*.cc
 	$(eval LIBFILES:=$(notdir $(basename $(wildcard $(SRCDIR)/$*/*.cc))))
