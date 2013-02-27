@@ -1,6 +1,6 @@
 // Copyright 2013 Eugen Sawin <esawin@me73.com>
 #include <gtest/gtest.h>
-#include <gmock/gmock.h>
+// #include <gmock/gmock.h>
 #include <vector>
 #include <unordered_set>
 #include <set>
@@ -22,9 +22,9 @@ using std::endl;
 using std::stringstream;
 using std::numeric_limits;
 
-using ::testing::ElementsAre;
-using ::testing::Contains;
-using ::testing::Not;
+// using ::testing::ElementsAre;
+// using ::testing::Contains;
+// using ::testing::Not;
 
 using namespace flow::io;  // NOLINT
 
