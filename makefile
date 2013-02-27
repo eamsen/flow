@@ -4,7 +4,7 @@ BINDIR:=bin
 OBJDIR:=bin/obj
 SRCSUBDIRS:=$(notdir $(patsubst %/,%,$(filter %/,$(wildcard $(SRCDIR)/*/))))
 GTESTLIBS:=-lgtest -lgtest_main
-CXX:=g++ -std=c++0x
+CXX:=g++ -std=c++11
 CFLAGS:=-Wall -O3
 LIBS:=-Llibs -lpthread -lrt
 TSTFLAGS:=-O0 -Wall -g

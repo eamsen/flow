@@ -6,6 +6,7 @@
 #include <istream>
 #include <ostream>
 #include <vector>
+#include <type_traits>
 
 namespace flow {
 namespace io {
@@ -120,22 +121,10 @@ struct Reader<true, Container, T, Args...> {
   }
 };
 
-// Meta-structure used to determine whether two types are equal.
-template<typename T1, typename T2>
-struct Equal {
-  static const bool value = false;
-};
-
-// Meta-structure specialization for two equal types.
-template<typename T>
-struct Equal<T, T> {
-  static const bool value = true;
-};
-
 template<template<typename T, typename...> class Container,
          typename T, typename... Args>
 void Read(std::istream& stream, Container<T, Args...>* target) {  // NOLINT
-  return Reader<!Equal<T, typename Container<T, Args...>::value_type>::value,
+  return Reader<!std::is_same<T, typename Container<T, Args...>::value_type>::value,
                 Container, T, Args...>::_Read(stream, target);
 }
 
