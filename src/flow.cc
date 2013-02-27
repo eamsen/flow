@@ -48,8 +48,6 @@ void SerializeDemo() {
     Read(ss, &in);
     assert(nested == in);
   }
-  // Not yet supported.
-  return;
   {
     unordered_map<string, vector<int> > nested = 
         {{"key1", vector<int>({})},
