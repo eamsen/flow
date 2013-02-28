@@ -78,7 +78,7 @@ libflow: $(OBJS)
 	@rm -rf include/flow/test/;
 	@echo "copied headers"
 
-libflow-%: $(SRCDIR)/%/*.cc
+libflow-%: $(SRCDIR)/%/*.cc $(SRCDIR)/%/*.h
 	$(eval LIBFILES:=$(notdir $(basename $(wildcard $(SRCDIR)/$*/*.cc))))
 	$(eval LIBOBJS:=$(addprefix $(OBJDIR)/$(@F)-, $(addsuffix .o, $(LIBFILES))))
 	@for i in $(LIBFILES); do \
@@ -93,7 +93,7 @@ $(BINDIR)/%: $(OBJS) $(SRCDIR)/%.cc
 	@echo "compiled $(BINDIR)/$(@F)"
 
 $(OBJDIR)/%.o: $(SRCDIR)/%.cc $(SRCDIR)/%.h
-	@$(CXX) $(CFLAGS) -o $(OBJDIR)/$(@F) -c $<
+	$(CXX) $(CFLAGS) -o $(OBJDIR)/$(@F) -c $<
 
 $(BINDIR)/%-test: $(OBJS) $(TSTDIR)/*.cc
 	@$(CXX) $(CFLAGS) -o $(OBJDIR)/$(@F).o -c $(TSTDIR)/$(@F).cc

@@ -99,7 +99,6 @@ class ClockDiff {
 };
 
 // High-resolution clock used for performance measuring.
-// Use this until you have C++11 support via chrono.
 template<uint8_t _ClockType = CLOCK_MONOTONIC>
 class BasicClock {
  public:
