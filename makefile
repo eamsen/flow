@@ -20,23 +20,18 @@ OBJS:=$(addprefix $(OBJDIR)/, $(OBJS))
 BINS:=$(addprefix $(BINDIR)/, $(BINS))
 TSTBINS:=$(addprefix $(BINDIR)/, $(TSTBINS))
 
-all: compile
-
 compile: makedirs $(BINS) libflow
 	@echo "finished compiling"
 
+install: compile
+	@mkdir -p /usr/include/flow;
+	@cp $(SRCDIR)/*.h /usr/include/flow/;
+	@cp -r $(SRCDIR)/* /usr/include/flow/;
+	@rm -rf /usr/include/flow/test/;
+	@echo "copied headers to /usr/include/flow"
+
 libs: makedirs $(INTLIBS)
 	@echo "compiled libs"
-
-profile: CFLAGS=-Wall -O3 -DPROFILE
-profile: LIBS+=-lprofiler
-profile: clean compile
-
-opt: CFLAGS=-Ofast -flto -mtune=native -DNDEBUG
-opt: clean all
-
-debug: CFLAGS=-O0 -g
-debug: clean all
 
 depend: cpplint
 	@echo "compiled all dependencies"
@@ -48,7 +43,7 @@ makedirs:
 	@mkdir -p bin/obj
 
 cpplint:
-	@git submodule init;
+	@git submodule initi >/dev/null;
 	@git submodule update;
 
 check: makedirs $(TSTBINS)
@@ -69,8 +64,7 @@ clean:
 	@echo "cleaned"
 
 .PRECIOUS: $(OBJS) $(TSTOBJS)
-.PHONY: libs all compile profile opt depend makedirs check\
-	cpplint checkstyle clean
+.PHONY: libs all compile depend makedirs check cpplint checkstyle clean
 
 libflow: $(OBJS)
 	@cp $(SRCDIR)/*.h include/flow/;
