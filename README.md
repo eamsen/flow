@@ -7,7 +7,7 @@ Unstable draft.
 ### `v0.1` Features
 * simple execution time measurement
 * basic STL container serialization
-* STL container pretty-printing 
+* STL container pretty-printing
 
 ### Planned Features
 * C++11-based `Clock`
@@ -33,8 +33,8 @@ To build Flow use:
 
     make
 
-Note that this will just copy the header files to the `include` directory and 
-compile the demo program `flow`. 
+Note that this will just copy the header files to the `include` directory and
+compile the demo program `flow`.
 
 To install Flow use:
 
@@ -68,7 +68,7 @@ just use the `Value` member function:
     auto duration = Clock() - begin;  // Saves the clock difference.
     cout << duration.Value();  // Prints the duration in microseconds.
 
-### Pretty-print STL containers 
+### Pretty-print STL containers
 Include `flow/stringify.h` to use the pretty-print feature for STL containers.
 You may use the function `Str` explicitly or just enjoy the overloaded stream
 operator.
@@ -94,7 +94,7 @@ Here is an example to load and save a container to some file:
 
     using flow::io::Write;
     using flow::io::Read;
-  
+
     map<pair<int, string>, vector<int>> nested_map;  // Nasty nested container.
     fstream some_file("nested-map");  // Some file for the serialization data.
     Write(nested_map, some_file);  // Saves the map to the file.
