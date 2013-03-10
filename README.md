@@ -23,7 +23,7 @@ To build Flow use:
 
     make
 
-Note that this will just copy the header files into the `include` directory. 
+Note that this will just copy the header files to the `include` directory. 
 
 To install Flow use:
 
