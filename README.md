@@ -32,7 +32,7 @@ To install Flow use:
 Note that this will copy the header files to the `/usr/include/` directory,
 hence requiring *superuser* priviledges.
 
-## Using
+## Usage
 ### Measure execution time
 Include `flow/clock.h` to use the execution time measuring clocks. There
 are three classes for clocks: `ThreadClock`, `ProcessClock` and just `Clock`,
