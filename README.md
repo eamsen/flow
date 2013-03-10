@@ -4,6 +4,16 @@ By Eugen Sawin <esawin@me73.com>.
 ## Version
 Unstable draft.
 
+### `v0.1` Features
+* simple execution time measurement
+* basic STL container serialization
+* STL container pretty-printing 
+
+### Planned Features
+* C++11-based `Clock`
+* simple concurrency constructs
+* *and more...*
+
 ## Requirements
 * POSIX.1b-compliant operating system (support for librt)
 * GNU Make
@@ -23,14 +33,15 @@ To build Flow use:
 
     make
 
-Note that this will just copy the header files to the `include` directory. 
+Note that this will just copy the header files to the `include` directory and 
+compile the demo program `flow`. 
 
 To install Flow use:
 
     sudo make install
 
 Note that this will copy the header files to the `/usr/include/` directory,
-hence requiring *superuser* priviledges.
+therefore requiring *superuser* priviledges.
 
 ## Usage
 ### Measure execution time
@@ -48,14 +59,14 @@ Here is an example for realtime performance measuring:
     cout << Clock() - begin;  // Pretty-prints the duration.
 
 If you want to print the exact duration value without automatic pretty-printing,
-just use the `value()` member function:
+just use the `Value` member function:
 
     using flow::time::Clock;
 
     Clock begin;  // Stops the begin time.
     // Run the procedures to be measured here.
     auto duration = Clock() - begin;  // Saves the clock difference.
-    cout << duration.value();  // Prints the duration in microseconds.
+    cout << duration.Value();  // Prints the duration in microseconds.
 
 ### Pretty-print STL containers 
 Include `flow/stringify.h` to use the pretty-print feature for STL containers.
@@ -91,6 +102,22 @@ Here is an example to load and save a container to some file:
     map<pair<int, string> vector<int>> nested_map_in;
     Read(some_file, &nested_map_in);  // Loads the map from the file.
     assert(nested_map == nested_map_in);  // Should hold.
+
+## Development
+### Test
+Testing depends on *gtest*. To build and run the unit tests use:
+
+    make check
+
+### Check code style
+Code style is verified using a modified version of Google's *cpplint*. Get it
+via
+
+    make cpplint
+
+To test code style conformance with the [Google C++ Style Guide](http://google-styleguide.googlecode.com/svn/trunk/cppguide.xml) use:
+
+    make checkstyle
 
 ## License
 The MIT License.

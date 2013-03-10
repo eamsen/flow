@@ -43,8 +43,9 @@ makedirs:
 	@mkdir -p bin/obj
 
 cpplint:
-	@git submodule initi >/dev/null;
+	@git submodule init >/dev/null;
 	@git submodule update;
+	@echo "fetched cpplint"
 
 check: makedirs $(TSTBINS)
 	@for t in $(TSTBINS); do ./$$t; done

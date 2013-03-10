@@ -6,6 +6,7 @@
 #include <string>
 #include <sstream>
 #include <type_traits>
+#include <utility>
 
 namespace flow {
 namespace io {
@@ -21,7 +22,8 @@ Output Convert(const Input& value) {
 }
 
 // Delimiters and wrappers used for string conversions invoked by the overloaded
-// stream << operator. TODO(esawine): Make thread-safe.
+// stream << operator.
+// TODO(esawin): Make thread-safe.
 struct Stringify {
   static std::string delim;
   static std::string pair_div;
@@ -77,7 +79,7 @@ std::string Str(const Container<Args...>& con,
     const std::string& wrap_end = flow::io::Stringify::wrap_end,
     const std::string& pair_div = flow::io::Stringify::pair_div);
 
-// Returns the string representation for the given value, other args are ignored.
+// Returns the string representation for the given value, args are ignored.
 template<typename T>
 std::string Str(const T& value,
     const std::string& delim = flow::io::Stringify::delim,

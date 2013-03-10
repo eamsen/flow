@@ -124,8 +124,9 @@ struct Reader<true, Container, T, Args...> {
 template<template<typename T, typename...> class Container,
          typename T, typename... Args>
 void Read(std::istream& stream, Container<T, Args...>* target) {  // NOLINT
-  return Reader<!std::is_same<T, typename Container<T, Args...>::value_type>::value,
-                Container, T, Args...>::_Read(stream, target);
+  return Reader<!std::is_same<T,
+      typename Container<T, Args...>::value_type>::value,
+      Container, T, Args...>::_Read(stream, target);
 }
 
 // Writes the given container to the stream.

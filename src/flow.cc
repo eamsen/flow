@@ -52,7 +52,7 @@ void SerializeDemo() {
     assert(nested == in);
   }
   {
-    unordered_map<string, vector<int> > nested = 
+    unordered_map<string, vector<int> > nested =
         {{"key1", vector<int>({})},
          {"key2", vector<int>({1})},
          {"key3", vector<int>({1, 2, 3})}};
@@ -97,7 +97,7 @@ void StringifyDemo() {
     assert(ss.str() == Str(nested));
   }
   {
-    unordered_map<string, vector<int> > nested = 
+    unordered_map<string, vector<int> > nested =
         {{"key1", vector<int>({})},
          {"key2", vector<int>({1, 2, 3})}};
     string str = Str(nested);

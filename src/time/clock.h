@@ -90,7 +90,7 @@ class ClockDiff {
   }
 
   // Returns the integral value of the diff (microseconds).
-  const ValueType& value() const {
+  const ValueType& Value() const {
     return value_;
   }
 
