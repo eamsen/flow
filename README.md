@@ -18,7 +18,7 @@ None.
 * gtest *for testing* (<http://code.google.com/p/googletest>)
 * cpplint *for style checking* (`make cpplint`)
 
-## Building
+## Installation
 To build Flow use:
 
     make
