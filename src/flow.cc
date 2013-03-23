@@ -9,6 +9,7 @@
 #include "./clock.h"
 #include "./serialize.h"
 #include "./stringify.h"
+#include "./string.h"
 
 using std::cout;
 using std::endl;
@@ -19,14 +20,12 @@ using std::unordered_set;
 using std::list;
 using std::stringstream;
 using std::pair;
-using flow::time::Clock;
-using flow::time::ProcessClock;
-using flow::time::ThreadClock;
-using flow::io::Read;
-using flow::io::Write;
-using flow::io::Str;
 
 void ClockDemo() {
+  using flow::time::Clock;
+  using flow::time::ProcessClock;
+  using flow::time::ThreadClock;
+
   Clock realtime;
   ProcessClock proctime;
   ThreadClock threadtime;
@@ -40,6 +39,9 @@ void ClockDemo() {
 }
 
 void SerializeDemo() {
+  using flow::io::Read;
+  using flow::io::Write;
+
   {
     vector<vector<vector<int> > > nested =
         {{{}},
@@ -65,6 +67,8 @@ void SerializeDemo() {
 }
 
 void StringifyDemo() {
+  using flow::io::Str;
+
   {
     vector<int> vec = {1, 2, 3, 4};
     assert(Str(vec) == "(1, 2, 3, 4)");
@@ -109,9 +113,17 @@ void StringifyDemo() {
   }
 }
 
+void StringDemo() {
+  using flow::string::Replace;
+  string s = "The red fox has blue eyes.";
+  Replace("red", "green", &s);
+  assert(s == "The green fox has blue eyes.");
+}
+
 int main() {
   ClockDemo();
   SerializeDemo();
   StringifyDemo();
+  StringDemo();
   cout << "Flow works flawlessly (otherwise you would not read this)." << endl;
 }
