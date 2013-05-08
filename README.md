@@ -1,16 +1,14 @@
 # Flow C++ Utilities
 By Eugen Sawin <esawin@me73.com>.
 
-## Version
-Unstable draft.
-
 ### `v0.1` Features
-* simple execution time measurement
+* simple time measurement
 * basic STL container serialization
 * STL container pretty-printing 
 
 ### Planned Features
 * C++11-based `Clock`
+* string operations
 * simple concurrency constructs
 * *and more...*
 
