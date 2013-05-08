@@ -6,7 +6,7 @@ By Eugen Sawin <esawin@me73.com>.
 * basic STL container serialization
 * STL container pretty-printing
 
-### Planned Features
+### Planned Features (check out on `develop` branch)
 * C++11-based `Clock`
 * string operations
 * simple concurrency constructs
