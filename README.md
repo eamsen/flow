@@ -3,7 +3,7 @@ By Eugen Sawin <esawin@me73.com>.
 
 ### `v0.1` Features
 * simple time measurement
-* basic STL container serialization
+* STL container serialization
 * STL container pretty-printing
 
 ### Planned Features (check out on `develop` branch)

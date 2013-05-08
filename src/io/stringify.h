@@ -29,12 +29,18 @@ struct Stringify {
   static std::string pair_div;
   static std::string wrap_start;
   static std::string wrap_end;
+  static std::string elem_wrap_start;
+  static std::string elem_wrap_end;
+  static std::string string_wrap;
 };
 
 std::string Stringify::delim = ", ";
 std::string Stringify::pair_div = ": ";
 std::string Stringify::wrap_start = "(";
 std::string Stringify::wrap_end = ")";
+std::string Stringify::elem_wrap_start = "";
+std::string Stringify::elem_wrap_end = "";
+std::string Stringify::string_wrap = "";
 
 }  // namespace io
 }  // namespace flow
@@ -77,7 +83,10 @@ std::string Str(const Container<Args...>& con,
     const std::string& delim = flow::io::Stringify::delim,
     const std::string& wrap_start = flow::io::Stringify::wrap_start,
     const std::string& wrap_end = flow::io::Stringify::wrap_end,
-    const std::string& pair_div = flow::io::Stringify::pair_div);
+    const std::string& pair_div = flow::io::Stringify::pair_div,
+    const std::string& elem_wrap_start = flow::io::Stringify::elem_wrap_start,
+    const std::string& elem_wrap_end = flow::io::Stringify::elem_wrap_end,
+    const std::string& string_wrap = flow::io::Stringify::string_wrap);
 
 // Returns the string representation for the given value, args are ignored.
 template<typename T>
@@ -85,7 +94,10 @@ std::string Str(const T& value,
     const std::string& delim = flow::io::Stringify::delim,
     const std::string& wrap_start = flow::io::Stringify::wrap_start,
     const std::string& wrap_end = flow::io::Stringify::wrap_end,
-    const std::string& pair_div = flow::io::Stringify::pair_div) {
+    const std::string& pair_div = flow::io::Stringify::pair_div,
+    const std::string& elem_wrap_start = flow::io::Stringify::elem_wrap_start,
+    const std::string& elem_wrap_end = flow::io::Stringify::elem_wrap_end,
+    const std::string& string_wrap = flow::io::Stringify::string_wrap) {
   return Convert<std::string>(value);
 }
 
@@ -93,8 +105,10 @@ std::string Str(const T& value,
 template<>
 std::string Str(const std::string& value, const std::string& delim,
     const std::string& wrap_start, const std::string& wrap_end,
-    const std::string& pair_div) {
-  return value;
+    const std::string& pair_div,
+    const std::string& elem_wrap_start, const std::string& elem_wrap_end,
+    const std::string& string_wrap) {
+  return string_wrap + value + string_wrap;
 }
 
 // Returns the string representation for the given pair based on provided
@@ -104,23 +118,37 @@ std::string Str(const std::pair<T1, T2>& pair,
     const std::string& delim = flow::io::Stringify::delim,
     const std::string& wrap_start = flow::io::Stringify::wrap_start,
     const std::string& wrap_end = flow::io::Stringify::wrap_end,
-    const std::string& pair_div = flow::io::Stringify::pair_div) {
-  return Str(pair.first, delim, wrap_start, wrap_end) + ": " +
-      Str(pair.second, delim, wrap_start, wrap_end);
+    const std::string& pair_div = flow::io::Stringify::pair_div,
+    const std::string& elem_wrap_start = flow::io::Stringify::elem_wrap_start,
+    const std::string& elem_wrap_end = flow::io::Stringify::elem_wrap_end,
+    const std::string& string_wrap = flow::io::Stringify::string_wrap) {
+  return Str(pair.first, delim, wrap_start, wrap_end, pair_div,
+             elem_wrap_start, elem_wrap_end, string_wrap) +
+    pair_div +
+    Str(pair.second, delim, wrap_start, wrap_end, pair_div,
+        elem_wrap_start, elem_wrap_end, string_wrap);
 }
 
 template<template<typename...> class Container, typename... Args>
 std::string Str(const Container<Args...>& con, const std::string& delim,
     const std::string& wrap_start, const std::string& wrap_end,
-    const std::string& pair_div) {
+    const std::string& pair_div,
+    const std::string& elem_wrap_start, const std::string& elem_wrap_end,
+    const std::string& string_wrap) {
   auto begin = con.begin();
   const auto end = con.end();
   std::ostringstream ss;
   ss << wrap_start;
   if (begin != end) {
-    ss << Str(*begin, delim, wrap_start, wrap_end);
+    ss << elem_wrap_start
+       << Str(*begin, delim, wrap_start, wrap_end, pair_div,
+              elem_wrap_start, elem_wrap_end, string_wrap)
+       << elem_wrap_end;
     while (++begin != end) {
-      ss << delim << Str(*begin, delim, wrap_start, wrap_end);
+      ss << delim << elem_wrap_start
+         << Str(*begin, delim, wrap_start, wrap_end, pair_div,
+                elem_wrap_start, elem_wrap_end, string_wrap)
+         << elem_wrap_end;
     }
   }
   ss << wrap_end;
