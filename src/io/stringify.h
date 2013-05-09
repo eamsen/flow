@@ -115,6 +115,18 @@ std::string Str(const Container<Args...>& con,
     const std::string& elem_wrap_end = flow::io::Stringify::kElemWrapEnd,
     const std::string& string_wrap = flow::io::Stringify::kStringWrap);
 
+// Returns the string representation for the given tuple based on provided
+// delimiter and wrappers.
+template<typename... Tp>
+std::string Str(const std::tuple<Tp...>& t,
+    const std::string& delim = flow::io::Stringify::kDelim,
+    const std::string& wrap_start = flow::io::Stringify::kWrapStart,
+    const std::string& wrap_end = flow::io::Stringify::kWrapEnd,
+    const std::string& pair_div = flow::io::Stringify::kPairDiv,
+    const std::string& elem_wrap_start = flow::io::Stringify::kElemWrapStart,
+    const std::string& elem_wrap_end = flow::io::Stringify::kElemWrapEnd,
+    const std::string& string_wrap = flow::io::Stringify::kStringWrap);
+
 // Returns the string representation for the given value, args are ignored.
 template<typename T>
 std::string Str(const T& value,
@@ -237,6 +249,11 @@ std::string Str(const Container<Args...>& con, const std::string& delim,
   }
   ss << wrap_end;
   return ss.str();
+}
+
+template<template<typename...> class Container, typename... Args>
+std::string JsonArray(const Container<Args...>& con) {
+  return Str(con, ",", "[", "]", ",", "", "", "\"");
 }
 
 }  // namespace io

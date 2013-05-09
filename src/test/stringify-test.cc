@@ -108,3 +108,27 @@ TEST(StringifyTest, map) {
     EXPECT_EQ("((\"a\": 1), (\"b\": 2))", Str(m));
   }
 }
+
+TEST(StringifyTest, JsonArray) {
+  {
+    vector<int> v = {};
+    EXPECT_EQ("[]", JsonArray(v));
+  }
+  {
+    vector<int> v = {1, 2, 3};
+    EXPECT_EQ("[1,2,3]", JsonArray(v));
+  }
+  {
+    vector<string> v = {"a", "b", "c"};
+    EXPECT_EQ("[\"a\",\"b\",\"c\"]", JsonArray(v));
+  }
+  {
+    map<string, vector<int>> v = {{"a", {1}}, {"b", {1, 2, 3}}};
+    EXPECT_EQ("[[\"a\",[1]],[\"b\",[1,2,3]]]", JsonArray(v));
+  }
+  {
+    map<string, tuple<string, int, int>> v =
+        {{"a", make_tuple("b", 1, 2)}, {"c", make_tuple("d", 3, 4)}};
+    EXPECT_EQ("[[\"a\",[\"b\",1,2]],[\"c\",[\"d\",3,4]]]", JsonArray(v));
+  }
+}
