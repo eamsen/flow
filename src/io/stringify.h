@@ -26,38 +26,49 @@ Output Convert(const Input& value) {
 // stream << operator.
 // TODO(esawin): Make thread-safe.
 struct Stringify {
-  static const std::string kDelim;
-  static const std::string kPairDiv;
-  static const std::string kWrapStart;
-  static const std::string kWrapEnd;
-  static const std::string kElemWrapStart;
-  static const std::string kElemWrapEnd;
-  static const std::string kStringWrap;
+  static constexpr char* kDelim = ", ";
+  static constexpr char* kPairDiv = ": ";
+  static constexpr char* kWrapStart = "(";
+  static constexpr char* kWrapEnd = ")";
+  static constexpr char* kElemWrapStart = "";
+  static constexpr char* kElemWrapEnd = "";
+  static constexpr char* kStringWrap = "\"";
 
-  static std::string delim;
-  static std::string pair_div;
-  static std::string wrap_start;
-  static std::string wrap_end;
-  static std::string elem_wrap_start;
-  static std::string elem_wrap_end;
-  static std::string string_wrap;
+  static const std::string& Delim() {
+    static std::string delim = kDelim;
+    return delim;
+  }
+
+  static const std::string& PairDiv() {
+    static std::string pair_div = kPairDiv;
+    return pair_div;
+  }
+
+  static const std::string& WrapStart() {
+    static std::string wrap_start = kWrapStart;
+    return wrap_start;
+  }
+
+  static const std::string& WrapEnd() {
+    static std::string wrap_end = kWrapEnd;
+    return wrap_end;
+  }
+
+  static const std::string& ElemWrapStart() {
+    static std::string elem_wrap_start = kElemWrapStart;
+    return elem_wrap_start;
+  }
+
+  static const std::string& ElemWrapEnd() {
+    static std::string elem_wrap_end = kElemWrapEnd;
+    return elem_wrap_end;
+  }
+
+  static const std::string& StringWrap() {
+    static std::string string_wrap = kStringWrap;
+    return string_wrap;
+  }
 };
-
-const std::string Stringify::kDelim = ", ";
-const std::string Stringify::kPairDiv = ": ";
-const std::string Stringify::kWrapStart = "(";
-const std::string Stringify::kWrapEnd = ")";
-const std::string Stringify::kElemWrapStart = "";
-const std::string Stringify::kElemWrapEnd = "";
-const std::string Stringify::kStringWrap = "\"";
-
-std::string Stringify::delim = Stringify::kDelim;
-std::string Stringify::pair_div = Stringify::kPairDiv;
-std::string Stringify::wrap_start = Stringify::kWrapStart;
-std::string Stringify::wrap_end = Stringify::kWrapEnd;
-std::string Stringify::elem_wrap_start = Stringify::kElemWrapStart;
-std::string Stringify::elem_wrap_end = Stringify::kElemWrapEnd;
-std::string Stringify::string_wrap = Stringify::kStringWrap;
 
 }  // namespace io
 }  // namespace flow
@@ -71,17 +82,17 @@ operator<<(std::ostream& stream, const Container<Args...>& con);
 // Stream operator overload for pair types.
 template<typename T1, typename T2>
 std::ostream& operator<<(std::ostream& stream, const std::pair<T1, T2>& pair) {
-  return stream << pair.first << flow::io::Stringify::pair_div << pair.second;
+  return stream << pair.first << flow::io::Stringify::PairDiv() << pair.second;
 }
 
 // Stream operator overload for tuples.
 template<typename... Tp>
 std::ostream& operator<<(std::ostream& stream, const std::tuple<Tp...>& t) {
-  return tuple_stream(t, stream, flow::io::Stringify::delim,
-      flow::io::Stringify::wrap_start, flow::io::Stringify::wrap_end,
-      flow::io::Stringify::pair_div,
-      flow::io::Stringify::elem_wrap_start, flow::io::Stringify::elem_wrap_end,
-      flow::io::Stringify::string_wrap);
+  return tuple_stream(t, stream, flow::io::Stringify::Delim(),
+      flow::io::Stringify::WrapStart(), flow::io::Stringify::WrapEnd(),
+      flow::io::Stringify::PairDiv(),
+      flow::io::Stringify::ElemWrapStart(), flow::io::Stringify::ElemWrapEnd(),
+      flow::io::Stringify::StringWrap());
 }
 
 template<template<typename...> class Container, typename... Args>
@@ -90,14 +101,14 @@ typename std::enable_if<!std::is_same<Container<Args...>, std::string>::value,
 operator<<(std::ostream& stream, const Container<Args...>& con) {
   auto begin = con.begin();
   const auto end = con.end();
-  stream << flow::io::Stringify::wrap_start;
+  stream << flow::io::Stringify::WrapStart();
   if (begin != end) {
     stream << *begin;
     while (++begin != end) {
-      stream << flow::io::Stringify::delim << *begin;
+      stream << flow::io::Stringify::Delim() << *begin;
     }
   }
-  return stream << flow::io::Stringify::wrap_end;
+  return stream << flow::io::Stringify::WrapEnd();
 }
 
 namespace flow {
@@ -106,7 +117,7 @@ namespace io {
 // Returns the string representation for the given container based on provided
 // delimiter and wrapper.
 template<template<typename...> class Container, typename... Args>
-std::string Str(const Container<Args...>& con,
+inline std::string Str(const Container<Args...>& con,
     const std::string& delim = flow::io::Stringify::kDelim,
     const std::string& wrap_start = flow::io::Stringify::kWrapStart,
     const std::string& wrap_end = flow::io::Stringify::kWrapEnd,
@@ -118,7 +129,7 @@ std::string Str(const Container<Args...>& con,
 // Returns the string representation for the given tuple based on provided
 // delimiter and wrappers.
 template<typename... Tp>
-std::string Str(const std::tuple<Tp...>& t,
+inline std::string Str(const std::tuple<Tp...>& t,
     const std::string& delim = flow::io::Stringify::kDelim,
     const std::string& wrap_start = flow::io::Stringify::kWrapStart,
     const std::string& wrap_end = flow::io::Stringify::kWrapEnd,
@@ -129,7 +140,7 @@ std::string Str(const std::tuple<Tp...>& t,
 
 // Returns the string representation for the given value, args are ignored.
 template<typename T>
-std::string Str(const T& value,
+inline std::string Str(const T& value,
     const std::string& delim = flow::io::Stringify::kDelim,
     const std::string& wrap_start = flow::io::Stringify::kWrapStart,
     const std::string& wrap_end = flow::io::Stringify::kWrapEnd,
@@ -142,7 +153,7 @@ std::string Str(const T& value,
 
 // Returns the string representation for the given string.
 template<>
-std::string Str(const std::string& value, const std::string& delim,
+inline std::string Str(const std::string& value, const std::string& delim,
     const std::string& wrap_start, const std::string& wrap_end,
     const std::string& pair_div,
     const std::string& elem_wrap_start, const std::string& elem_wrap_end,
@@ -153,7 +164,7 @@ std::string Str(const std::string& value, const std::string& delim,
 // Returns the string representation for the given pair based on provided
 // delimiter, wrapper and pair delimiter.
 template<typename T1, typename T2>
-std::string Str(const std::pair<T1, T2>& pair,
+inline std::string Str(const std::pair<T1, T2>& pair,
     const std::string& delim = flow::io::Stringify::kDelim,
     const std::string& wrap_start = flow::io::Stringify::kWrapStart,
     const std::string& wrap_end = flow::io::Stringify::kWrapEnd,
@@ -209,7 +220,7 @@ TupleStream(const std::tuple<Tp...>& t, std::ostream& stream,
 // Returns the string representation for the given tuple based on provided
 // delimiter and wrappers.
 template<typename... Tp>
-std::string Str(const std::tuple<Tp...>& t,
+inline std::string Str(const std::tuple<Tp...>& t,
     const std::string& delim = flow::io::Stringify::kDelim,
     const std::string& wrap_start = flow::io::Stringify::kWrapStart,
     const std::string& wrap_end = flow::io::Stringify::kWrapEnd,
@@ -226,7 +237,7 @@ std::string Str(const std::tuple<Tp...>& t,
 }
 
 template<template<typename...> class Container, typename... Args>
-std::string Str(const Container<Args...>& con, const std::string& delim,
+inline std::string Str(const Container<Args...>& con, const std::string& delim,
     const std::string& wrap_start, const std::string& wrap_end,
     const std::string& pair_div,
     const std::string& elem_wrap_start, const std::string& elem_wrap_end,
@@ -252,7 +263,7 @@ std::string Str(const Container<Args...>& con, const std::string& delim,
 }
 
 template<template<typename...> class Container, typename... Args>
-std::string JsonArray(const Container<Args...>& con) {
+inline std::string JsonArray(const Container<Args...>& con) {
   return Str(con, ",", "[", "]", ",", "", "", "\"");
 }
 
