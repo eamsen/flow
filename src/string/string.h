@@ -10,7 +10,7 @@ namespace flow {
 namespace string {
 
 // Replaces all occurences of old_str with new_str in the given string.
-void Replace(const std::string& old_str, const std::string& new_str,
+inline void Replace(const std::string& old_str, const std::string& new_str,
     std::string* str) {
   assert(str);
   if (old_str.size() == 0) {
@@ -24,7 +24,7 @@ void Replace(const std::string& old_str, const std::string& new_str,
 }
 
 // Splits the given string at any of the given delimeters.
-std::vector<std::string> Split(const std::string& str,
+inline std::vector<std::string> Split(const std::string& str,
     const std::string& delims) {
   std::vector<std::string> substrings;
   size_t pos = str.find_first_not_of(delims);
